@@ -132,14 +132,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-Utkarsh Mishra - [@Utkarsh56016](https://github.com/Utkarsh56016) - utkarsh.mishra@example.com
+Utkarsh Mishra - [@Utkarsh56016](https://github.com/Utkarsh56016) - utkarshmishrahe0450@gmail.com
 
 Project Link: [https://github.com/Utkarsh56016/UAV-TeliWEB](https://github.com/Utkarsh56016/UAV-TeliWEB)
 
 ---
 
 <div align="center">
-  Made with ❤️ by Your Name
+  Made with ❤️ by Utkarsh Mishra
 </div>
 
 ---

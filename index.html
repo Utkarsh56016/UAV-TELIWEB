@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UAV MISSION CONTROLL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap">
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- Google Fonts for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <canvas id="code-rain-bg" style="display:none; position:fixed; left:0; top:0; width:100vw; height:100vh; z-index:0; pointer-events:none;"></canvas>
+    <div class="dashboard">
+        <header>
+            <h1>
+  <span style="display:inline-flex; align-items:center; vertical-align:middle;">
+    
+    <span>UAV MISSION CONTROLL</span>
+  </span>
+</h1>
+            <div class="theme-selector">
+                <label for="theme-select" title="Theme">
+                    <i class="fas fa-palette"></i>
+                </label>
+                <select id="theme-select">
+                    <option value="default">Default</option>
+                    <option value="darkblue">Dark Blue</option>
+                    <option value="cyber">Cyber Neon</option>
+                    <option value="black">Black</option>
+                    <option value="hacker">Hacker (Matrix)</option>
+                    <option value="light">Light</option>
+                </select>
+            </div>
+        </header>
+        <main>
+            <div class="dashboard-bg-graphics" aria-hidden="true">
+                <svg width="100%" height="320" viewBox="0 0 900 320" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;left:0;top:0;width:100%;height:320px;z-index:0;">
+                  <defs>
+                    <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#4fd1c5" stop-opacity="0.18"/>
+                      <stop offset="100%" stop-color="#63b3ed" stop-opacity="0.12"/>
+                    </linearGradient>
+                    <radialGradient id="radial1" cx="0.7" cy="0.3" r="0.7">
+                      <stop offset="0%" stop-color="#63b3ed" stop-opacity="0.12"/>
+                      <stop offset="100%" stop-color="#232b3b" stop-opacity="0"/>
+                    </radialGradient>
+                  </defs>
+                  <circle cx="160" cy="120" r="80" fill="url(#grad1)"/>
+                  <circle cx="700" cy="60" r="60" fill="url(#radial1)"/>
+                  <rect x="340" y="60" width="220" height="60" rx="30" fill="url(#grad1)" opacity="0.22"/>
+                  <polyline points="60,300 300,180 600,230 850,110" fill="none" stroke="#4fd1c5" stroke-width="2" opacity="0.08"/>
+                  <polyline points="90,320 400,200 700,270 890,170" fill="none" stroke="#63b3ed" stroke-width="2" opacity="0.06"/>
+                </svg>
+            </div>
+            <section class="telemetry-grid">
+                <div class="telemetry-card" id="card-lat">
+                    <div class="icon"><i class="fas fa-location-arrow"></i></div>
+                    <div class="label">Latitude</div>
+                    <div class="value" id="lat">-</div>
+                </div>
+                <div class="telemetry-card" id="card-lon">
+                    <div class="icon"><i class="fas fa-location-arrow fa-flip-horizontal"></i></div>
+                    <div class="label">Longitude</div>
+                    <div class="value" id="lon">-</div>
+                </div>
+                <div class="telemetry-card" id="card-alt">
+                    <div class="icon"><i class="fas fa-arrow-up"></i></div>
+                    <div class="label">Altitude</div>
+                    <div class="value" id="alt">-</div>
+                    <div class="unit">m</div>
+                </div>
+                <div class="telemetry-card" id="card-velocity">
+                    <div class="icon"><i class="fas fa-tachometer-alt"></i></div>
+                    <div class="label">Velocity</div>
+                    <div class="value"><span id="vx">-</span>, <span id="vy">-</span>, <span id="vz">-</span></div>
+                    <div class="unit">m/s</div>
+                </div>
+                <div class="telemetry-card" id="card-battery">
+                    <div class="icon"><i class="fas fa-battery-three-quarters"></i></div>
+                    <div class="label">Battery</div>
+                    <div class="value"><span id="battery">-</span>%</div>
+                    <div class="unit" id="voltage">- V</div>
+                </div>
+                <div class="telemetry-card" id="card-armed">
+                    <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="label">Armed</div>
+                    <div class="value" id="armed">-</div>
+                </div>
+                <div class="telemetry-card" id="card-mode">
+                    <div class="icon"><i class="fas fa-cogs"></i></div>
+                    <div class="label">Mode</div>
+                    <div class="value" id="mode">-</div>
+                </div>
+                <div class="telemetry-card" id="card-mission">
+                    <div class="icon"><i class="fas fa-rocket"></i></div>
+                    <div class="label">Mission</div>
+                    <div class="value" id="is_mission_running">-</div>
+                </div>
+                <div class="telemetry-card orientation-card" id="card-orientation">
+                    <div class="attitude-indicator-container">
+                        <div class="icon"><i class="fas fa-compass"></i></div>
+                        <div class="label">Orientation</div>
+                        <canvas id="attitude-indicator" width="120" height="120" style="margin: 0.5rem 0;"></canvas>
+                    </div>
+                    <div class="drone-3d-canvas">
+                        <!-- Drone model will be rendered here by JS -->
+                        <canvas id="drone-3d" width="160" height="120" style="display: block;"></canvas>
+                    </div>
+                    <div class="orientation-values">
+                        <span>Roll: <span id="roll">-</span>°</span><br>
+                        <span>Pitch: <span id="pitch">-</span>°</span><br>
+                        <span>Yaw: <span id="yaw">-</span>°</span>
+                    </div>
+                </div>
+            </section>
+            <section class="mission-section">
+                <button id="arm-btn" aria-label="Arm Drone"><i class="fas fa-shield-alt"></i> ARM</button>
+<button id="disarm-btn" aria-label="Disarm Drone"><i class="fas fa-shield-alt"></i> DISARM</button>
+                <button id="takeoff-btn" aria-label="Take Off"><i class="fas fa-arrow-up"></i> Take Off</button>
+                <button id="start-btn"><i class="fas fa-play"></i> Start Mission</button>
+                <div id="status"></div>
+            </section>
+        </main>
+        <footer class="footer-fixed">
+    <div class="footer-creator">
+        <span class="footer-avatar"><img src="creator.png" alt="Andrew Mishaz" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'color:var(--primary);font-weight:bold;font-size:1.3rem;\'>AM</span>';" /></span>
+        <span class="footer-name">Andrew Mishaz</span>
+        <span class="footer-logo">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="24" r="22" stroke="#fff" stroke-width="2.5" fill="none"/>
+                <path d="M24 9 L36 39 L24 32 L12 39 Z" fill="#4fd1c5" stroke="#63b3ed" stroke-width="2"/>
+                <circle cx="24" cy="24" r="5" fill="#63b3ed" stroke="#4fd1c5" stroke-width="2"/>
+            </svg>
+        </span>
+        <span class="footer-project">&copy; 2025</span>
+    </div>
+</footer>
+    </div>
+    <script src="/static/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# Main project requirements
+# This file references all requirements for the project
+
+# Backend requirements
+-r backend/requirements.txt
+
+# Development dependencies
+pytest>=6.0.0
+black>=21.5b2
+flake8>=3.9.0
+mypy>=0.812
+pytest-cov>=2.8.0
+
+# Optional: If you have frontend build tools
+# nodeenv>=1.6.0
+# npm>=7.0.0
